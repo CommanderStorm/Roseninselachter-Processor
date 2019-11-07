@@ -2,6 +2,7 @@ import mysql
 
 from Import_to_JSON import importToJSON
 from Output_to_Database import output
+from Processing import processing
 
 # SET @@global.time_zone = '+01:00';
 findsolution = True
@@ -25,7 +26,7 @@ def stateHasChanged() -> bool:
     return myresult != 0
 
 
-def processing() -> bool:
+def currentlyAbleToProcess() -> bool:
     """
     :rtype: bool
     """
@@ -43,11 +44,11 @@ def processing() -> bool:
 test = True
 while test:
     if findsolution:
-        if stateHasChanged():
-            importToJSON(SQLPassword)
-        if not stateHasChanged():
-            processing()
-        if not stateHasChanged():
-            output()
-    findsolution = processing()
+        # if stateHasChanged():
+        importToJSON(SQLPassword)
+        # if not stateHasChanged():
+        processing()
+        # if not stateHasChanged():
+        output()
+    findsolution = currentlyAbleToProcess()
     test = False
