@@ -1,2 +1,2 @@
-def output():
+def output(SQLPassword, JSONDaten_Filename):
     a = []

@@ -3,14 +3,13 @@ import json
 import mysql.connector
 
 
-def importToJSON(p):
-    jsondaten = 'data.txt'
+def importToJSON(SQLPassword, JSONDaten_Filename):
     # delete current data
-    open(jsondaten, 'w').close()
+    open(JSONDaten_Filename, 'w').close()
 
     # SQL-init
     mydb = mysql.connector.connect(user='root',
-                                   password=p,
+                                   password=SQLPassword,
                                    host='127.0.0.1')
     mycursor = mydb.cursor()
     # getting data from SQL
@@ -40,11 +39,12 @@ def importToJSON(p):
             vertecies[verteciestmp['renn_id']] = {'boots_id': [], 'bootsname': [], 'athleten': []}
 
         vertecies[verteciestmp['renn_id']]['boots_id'].append(verteciestmp['boots_id'])
-        vertecies[verteciestmp['renn_id']]['bootsname'].append(verteciestmp['bootsname'])
+        if not verteciestmp['bootsname'] == '':
+            vertecies[verteciestmp['renn_id']]['bootsname'].append(verteciestmp['bootsname'])
         for athletennametmp in verteciestmp['athleten']:
             vertecies[verteciestmp['renn_id']]['athleten'].append(athletennametmp)
     data['vertecies'] = vertecies
 
     # saving progress
-    with open(jsondaten, 'w') as outfile:
+    with open(JSONDaten_Filename, 'w') as outfile:
         json.dump(data, outfile)

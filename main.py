@@ -1,5 +1,6 @@
 import mysql
 
+from Generate_Edges import generate_edges
 from Import_to_JSON import importToJSON
 from Output_to_Database import output
 from Processing import processing
@@ -7,6 +8,7 @@ from Processing import processing
 # SET @@global.time_zone = '+01:00';
 findsolution = True
 SQLPassword = ""
+JSONDaten_Filename = 'data.txt'
 while SQLPassword == "":
     SQLPassword: str = input("Please input the MYSQL Password for user [root]:\n\t>")
 
@@ -45,10 +47,11 @@ test = True
 while test:
     if findsolution:
         # if stateHasChanged():
-        importToJSON(SQLPassword)
+        importToJSON(SQLPassword, JSONDaten_Filename)
+        generate_edges(JSONDaten_Filename)
         # if not stateHasChanged():
-        processing()
+        processing(JSONDaten_Filename)
         # if not stateHasChanged():
-        output()
+        output(SQLPassword, JSONDaten_Filename)
     findsolution = currentlyAbleToProcess()
     test = False
